@@ -14,7 +14,7 @@ pub fn transport_config() -> Arc<TransportConfig> {
         // https://github.com/quic-interop/quic-interop-runner/issues/398
         .mtu_discovery_config(None)
         // Known interface MTU, minus conservative IPv6 and UDP header sizes
-        .initial_mtu(1500 - 40 - 8);
+        .initial_mtu(1200);
     Arc::new(transport_config)
 }
 

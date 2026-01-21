@@ -134,7 +134,16 @@ async fn serve_h3(conn: Connection) -> anyhow::Result<()> {
         .await
         .unwrap();
 
-    while let Some((req, stream)) = h3_conn.accept().await? {
+    while let Some(resolver) = h3_conn.accept().await? {
+        debug!("Received connection attempt...");
+        
+        let (req, stream) = match resolver.resolve_request().await {
+            Ok(v) => v,
+            Err(e) => {
+                error!("Failed to resolve request: {}", e);
+                continue;
+            }
+        };
         debug!("connection requested: {:#?}", req);
 
         tokio::spawn(async {
