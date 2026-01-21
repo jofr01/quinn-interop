@@ -6,11 +6,9 @@ Interoperability container for [Quinn](https://github.com/quinn-rs/quinn), a `QU
 
 This repository contains a server and client implementation to test interoperabilty with other `QUIC` and `HTTP/3` implementations. It also provides a container definition to be integrated to [QUIC interop runner]( https://github.com/marten-seemann/quic-interop-runner ), see the results [here](https://interop.seemann.io/).
 
-You can find the container at DockerHub: [stammw / quinn-interop](https://hub.docker.com/repository/docker/stammw/quinn-interop)
 
 ## Directory summary:
 
-* [submodule] quic-interop-runner: the testing application, to test locally
 * quinn-interop: interop application to be deployed into the container
 
 ## Getting started
@@ -18,7 +16,7 @@ You can find the container at DockerHub: [stammw / quinn-interop](https://hub.do
 Start by cloning the repository with its submodules:
 
 ``` sh
-git clone --recursive git://github.com/quinn-rs/quinn-interop
+git clone git://github.com/quinn-rs/quinn-interop
 
 ```
 
@@ -36,9 +34,14 @@ You will need some other dependencies on your system:
 
 ``` sh
 # Build the container
-docker build -f Dockerfile  -t stammw/quinn-interop:latest .
+docker build -f Dockerfile  -t quinn-interop:0.11.9 .
+```
 
-# Run the tests
-cd quic-interop-runner/
-python3 run.py -d -s quic-go -c quinn
+Use it in the [QUIC interop runner]( https://github.com/marten-seemann/quic-interop-runner ) by editing the 'implementations.json' file:
+``` json
+  "quinn": {
+    "image": "quinn-interop:0.11.9",
+    "url": "https://github.com/quinn-rs/quinn",
+    "role": "both"
+  }
 ```
